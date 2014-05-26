@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.lenis0012.bukkit</groupId>
+  <artifactId>NPCFactory</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <repositories>
+    <repository>
+      <id>bukkit-repo</id>
+      <url>http://repo.bukkit.org/content/groups/public</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>craftbukkit</artifactId>
+      <version>1.7.9-R0.1</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- Build -->
+  <build>
+    <defaultGoal>clean install</defaultGoal>
+	<!-- Plugins -->
+	<plugins>
+	  <!-- Compiler plugin -->
+	  <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>2.4</version>
+		<configuration>
+		  <source>1.6</source>
+		  <target>1.6</target>
+		  <showWarnings>true</showWarnings>
+		  <showDeprecation>false</showDeprecation>
+		</configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
