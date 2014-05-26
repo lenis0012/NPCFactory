@@ -1,7 +1,5 @@
 package com.lenis0012.bukkit.npc;
 
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
@@ -20,14 +18,13 @@ import net.minecraft.server.v1_7_R3.EntityHuman;
 import net.minecraft.server.v1_7_R3.EntityPlayer;
 import net.minecraft.server.v1_7_R3.EnumGamemode;
 import net.minecraft.server.v1_7_R3.PlayerInteractManager;
-import net.minecraft.util.com.mojang.authlib.GameProfile;
 
 public class NPCEntity extends EntityPlayer {
 	private final NPC npc;
 	private boolean invulnerable = true;
 	
 	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
-		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), new GameProfile(UUID.randomUUID(), "internal"), new PlayerInteractManager(((CraftWorld) world).getHandle()));
+		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile, new PlayerInteractManager(((CraftWorld) world).getHandle()));
 		playerInteractManager.b(EnumGamemode.SURVIVAL);
 		this.playerConnection = new NPCPlayerConnection(networkManager, this);
 		this.fauxSleeping = true;
