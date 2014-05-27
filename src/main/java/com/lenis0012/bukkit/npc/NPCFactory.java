@@ -6,11 +6,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * NPCFactory main class, intializes and creates npcs.
+ * 
+ * @author lenis0012
+ */
 public class NPCFactory implements Listener {
 	private final Plugin plugin;
 	private final NPCNetworkManager networkManager;
@@ -21,6 +29,13 @@ public class NPCFactory implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
 	
+	/**
+	 * Spawn a new npc at a speciafied location.
+	 * 
+	 * @param location Location to spawn npc at.
+	 * @param profile NPCProfile to use for npc
+	 * @return New npc instance.
+	 */
 	public NPC spawnHumanNPC(Location location, NPCProfile profile) {
 		World world = location.getWorld();
 		WorldServer worldServer = ((CraftWorld) world).getHandle();
@@ -32,17 +47,57 @@ public class NPCFactory implements Listener {
 		return entity.getNPC();
 	}
 	
+	/**
+	 * Get npc from entity.
+	 * 
+	 * @param entity Entity to get npc from.
+	 * @return NPC instance, null if entity is not an npc.
+	 */
+	public NPC getNPC(Entity entity) {
+		if(!isNPC(entity)) {
+			return null;
+		}
+		
+		NPCEntity npcEntity = (NPCEntity) ((CraftEntity) entity).getHandle();
+		return npcEntity.getNPC();
+	}
+	
+	/**
+	 * Check if an entity is a NPC.
+	 * 
+	 * @param entity Entity to check.
+	 * @return Entity is a npc?
+	 */
+	public boolean isNPC(Entity entity) {
+		return entity.hasMetadata("NPC");
+	}
+	
+	/**
+	 * Despawn all npc's on all worlds.
+	 */
 	public void despawnAll() {
 		for(World world : Bukkit.getWorlds()) {
 			despawnAll(world);
 		}
 	}
 	
+	/**
+	 * Despawn all npc's on a single world.
+	 * 
+	 * @param world World to despawn npc's on.
+	 */
 	public void despawnAll(World world) {
 		for(Entity entity : world.getEntities()) {
 			if(entity.hasMetadata("NPC")) {
 				entity.remove();
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onPluginDisable(PluginDisableEvent event) {
+		if(event.getPlugin().equals(plugin)) {
+			despawnAll();
 		}
 	}
 }

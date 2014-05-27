@@ -6,6 +6,11 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+/**
+ * When an npc is attacked by a human.
+ * 
+ * @author lenis0012
+ */
 public class NPCDamageEvent extends Event implements Cancellable {
 	private static final HandlerList handlerList = new HandlerList();
 	private boolean cancelled = false;

@@ -5,6 +5,11 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * When a player right clicks a npc.
+ * 
+ * @author lenis0012
+ */
 public class NPCInteractEvent extends Event implements Cancellable {
 	private static final HandlerList handlerList = new HandlerList();
 	private boolean canceled = false;

@@ -22,6 +22,7 @@ import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 public class NPCEntity extends EntityPlayer {
 	private final NPC npc;
 	private boolean invulnerable = true;
+	private int tick = 20;
 	
 	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
 		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile, new PlayerInteractManager(((CraftWorld) world).getHandle()));
@@ -47,6 +48,16 @@ public class NPCEntity extends EntityPlayer {
 
 	public void setInvulnerable(boolean invulnerable) {
 		this.invulnerable = invulnerable;
+	}
+	
+	@Override
+	public void h() {
+		super.h();
+		
+		if(tick-- <= 0) {
+			this.tick = 20;
+			npc.onTick();
+		}
 	}
 
 	@Override
