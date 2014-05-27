@@ -17,12 +17,13 @@ import net.minecraft.server.v1_7_R3.EntityDamageSourceIndirect;
 import net.minecraft.server.v1_7_R3.EntityHuman;
 import net.minecraft.server.v1_7_R3.EntityPlayer;
 import net.minecraft.server.v1_7_R3.EnumGamemode;
+import net.minecraft.server.v1_7_R3.MathHelper;
+import net.minecraft.server.v1_7_R3.PacketPlayOutRelEntityMove;
 import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
 public class NPCEntity extends EntityPlayer {
 	private final NPC npc;
 	private boolean invulnerable = true;
-	private int tick = 20;
 	
 	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
 		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile, new PlayerInteractManager(((CraftWorld) world).getHandle()));
@@ -54,10 +55,7 @@ public class NPCEntity extends EntityPlayer {
 	public void h() {
 		super.h();
 		
-		if(tick-- <= 0) {
-			this.tick = 20;
-			npc.onTick();
-		}
+		npc.onTick();
 	}
 
 	@Override
@@ -73,7 +71,19 @@ public class NPCEntity extends EntityPlayer {
 	
 	@Override
 	public void move(double dx, double dy, double dz) {
-		setPosition(locX + dx, locY + dy, locZ + dz);
+		this.lastX = locX += dx;
+		this.lastY = locY += dy;
+		this.lastZ = locZ += dz;
+		
+		byte x = (byte) MathHelper.floor(dx * 32.0D);
+		byte y = (byte) MathHelper.floor(dy * 32.0D);
+		byte z = (byte) MathHelper.floor(dz * 32.0D);
+		PacketPlayOutRelEntityMove packet = new PacketPlayOutRelEntityMove(getId(), x, y, z);
+		
+		for(Object obj : world.players) {
+			EntityPlayer entityPlayer = (EntityPlayer) obj;
+			entityPlayer.playerConnection.sendPacket(packet);
+		}
 	}
 
 	@Override
