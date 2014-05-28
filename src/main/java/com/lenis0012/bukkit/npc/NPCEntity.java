@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R3.event.CraftEventFactory;
 import org.bukkit.entity.Projectile;
@@ -17,6 +18,8 @@ import net.minecraft.server.v1_7_R3.EntityDamageSourceIndirect;
 import net.minecraft.server.v1_7_R3.EntityHuman;
 import net.minecraft.server.v1_7_R3.EntityPlayer;
 import net.minecraft.server.v1_7_R3.EnumGamemode;
+import net.minecraft.server.v1_7_R3.Material;
+import net.minecraft.server.v1_7_R3.MathHelper;
 import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
 public class NPCEntity extends EntityPlayer {
@@ -52,8 +55,12 @@ public class NPCEntity extends EntityPlayer {
 	@Override
 	public void h() {
 		super.h();
+		this.B();
 		
 		npc.onTick();
+		if(this.fireTicks <= 0 && world.getType(MathHelper.floor(locX), MathHelper.floor(locY), MathHelper.floor(locZ)).getMaterial() == Material.FIRE) {
+			setOnFire(15);
+		}
 	}
 
 	@Override
@@ -66,27 +73,10 @@ public class NPCEntity extends EntityPlayer {
 		
 		return super.a(entity);
 	}
-	
-//	@Override
-//	public void move(double dx, double dy, double dz) {
-//		this.lastX = locX += dx;
-//		this.lastY = locY += dy;
-//		this.lastZ = locZ += dz;
-//		
-//		byte x = (byte) MathHelper.floor(dx * 32.0D);
-//		byte y = (byte) MathHelper.floor(dy * 32.0D);
-//		byte z = (byte) MathHelper.floor(dz * 32.0D);
-//		PacketPlayOutRelEntityMove packet = new PacketPlayOutRelEntityMove(getId(), x, y, z);
-//		
-//		for(Object obj : world.players) {
-//			EntityPlayer entityPlayer = (EntityPlayer) obj;
-//			entityPlayer.playerConnection.sendPacket(packet);
-//		}
-//	}
 
 	@Override
 	public boolean damageEntity(DamageSource source, float damage) {
-		if(invulnerable) {
+		if(invulnerable || noDamageTicks > 0) {
 			return false;
 		}
 		
@@ -137,6 +127,22 @@ public class NPCEntity extends EntityPlayer {
 			}
 		}
 		
-		return super.damageEntity(source, damage);
+		if(super.damageEntity(source, damage)) {
+			if (bEntity != null) {
+				Entity e = ((CraftEntity) bEntity).getHandle();
+				double d0 = e.locX - this.locX;
+
+				double d1;
+				for (d1 = e.locZ - this.locZ; d0 * d0 + d1 * d1 < 0.0001D; d1 = (Math.random() - Math.random()) * 0.01D) { 
+					d0 = (Math.random() - Math.random()) * 0.01D;
+				}
+
+				a(e, damage, d0, d1);
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
