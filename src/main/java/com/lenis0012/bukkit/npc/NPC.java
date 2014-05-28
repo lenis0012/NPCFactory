@@ -17,7 +17,6 @@ import org.bukkit.util.Vector;
  */
 public class NPC {
 	private NPCEntity entity;
-	private int tick = 10;
 	private NPCPath path;
 	
 	public NPC(NPCEntity entity) {
@@ -37,7 +36,7 @@ public class NPC {
 	}
 	
 	public boolean pathfindTo(Location location) {
-		return pathfindTo(location, 4.0);
+		return pathfindTo(location, 0.2);
 	}
 	
 	public boolean pathfindTo(Location location, double speed) {
@@ -56,9 +55,8 @@ public class NPC {
 			} else if(entity.getBukkitEntity().getLocation().getWorld().equals(target.getWorld()) && entity.getBukkitEntity().getLocation().distanceSquared(target.getLocation()) <= 32 * 32) {
 				lookAt(target.getLocation());
 			}
-		} if(tick-- <= 0) {
-			this.tick = 10;
-			if(path != null && !path.update()) {
+		} if(path != null) {
+			if(!path.update()) {
 				this.path = null;
 			}
 		}
