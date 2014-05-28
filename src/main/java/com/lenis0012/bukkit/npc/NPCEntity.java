@@ -17,8 +17,6 @@ import net.minecraft.server.v1_7_R3.EntityDamageSourceIndirect;
 import net.minecraft.server.v1_7_R3.EntityHuman;
 import net.minecraft.server.v1_7_R3.EntityPlayer;
 import net.minecraft.server.v1_7_R3.EnumGamemode;
-import net.minecraft.server.v1_7_R3.MathHelper;
-import net.minecraft.server.v1_7_R3.PacketPlayOutRelEntityMove;
 import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
 public class NPCEntity extends EntityPlayer {
@@ -69,22 +67,22 @@ public class NPCEntity extends EntityPlayer {
 		return super.a(entity);
 	}
 	
-	@Override
-	public void move(double dx, double dy, double dz) {
-		this.lastX = locX += dx;
-		this.lastY = locY += dy;
-		this.lastZ = locZ += dz;
-		
-		byte x = (byte) MathHelper.floor(dx * 32.0D);
-		byte y = (byte) MathHelper.floor(dy * 32.0D);
-		byte z = (byte) MathHelper.floor(dz * 32.0D);
-		PacketPlayOutRelEntityMove packet = new PacketPlayOutRelEntityMove(getId(), x, y, z);
-		
-		for(Object obj : world.players) {
-			EntityPlayer entityPlayer = (EntityPlayer) obj;
-			entityPlayer.playerConnection.sendPacket(packet);
-		}
-	}
+//	@Override
+//	public void move(double dx, double dy, double dz) {
+//		this.lastX = locX += dx;
+//		this.lastY = locY += dy;
+//		this.lastZ = locZ += dz;
+//		
+//		byte x = (byte) MathHelper.floor(dx * 32.0D);
+//		byte y = (byte) MathHelper.floor(dy * 32.0D);
+//		byte z = (byte) MathHelper.floor(dz * 32.0D);
+//		PacketPlayOutRelEntityMove packet = new PacketPlayOutRelEntityMove(getId(), x, y, z);
+//		
+//		for(Object obj : world.players) {
+//			EntityPlayer entityPlayer = (EntityPlayer) obj;
+//			entityPlayer.playerConnection.sendPacket(packet);
+//		}
+//	}
 
 	@Override
 	public boolean damageEntity(DamageSource source, float damage) {

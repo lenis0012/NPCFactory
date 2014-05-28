@@ -37,7 +37,7 @@ public class NPC {
 	}
 	
 	public boolean pathfindTo(Location location) {
-		return pathfindTo(location, 0.4);
+		return pathfindTo(location, 4.0);
 	}
 	
 	public boolean pathfindTo(Location location, double speed) {
@@ -51,9 +51,9 @@ public class NPC {
 	
 	protected void onTick() {
 		if(target != null && path == null) {
-			if(target.isDead()) {
+			if(target.isDead() || (target instanceof Player && !((Player) target).isOnline())) {
 				this.target = null;
-			} if(entity.getBukkitEntity().getLocation().getWorld().equals(target.getWorld()) && entity.getBukkitEntity().getLocation().distanceSquared(target.getLocation()) <= 32 * 32) {
+			} else if(entity.getBukkitEntity().getLocation().getWorld().equals(target.getWorld()) && entity.getBukkitEntity().getLocation().distanceSquared(target.getLocation()) <= 32 * 32) {
 				lookAt(target.getLocation());
 			}
 		} if(tick-- <= 0) {

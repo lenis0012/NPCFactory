@@ -22,10 +22,15 @@ public class NPCPath {
 		}
 		
 		Vec3D vec = nmsPath.a(entity);
-		Vec3D endVec = nmsPath.a(entity, nmsPath.e() - 1);
-		entity.getNPC().lookAt(new Location(entity.getBukkitEntity().getWorld(), endVec.a, endVec.b, endVec.c));
-		entity.i(speed);
-		entity.e((float) vec.a, (float) vec.c);
+		nmsPath.a();
+		
+		double dx = vec.a - entity.locX;
+		double dy = vec.b - entity.locY;
+		double dz = vec.c - entity.locZ;
+		
+		entity.getNPC().lookAt(new Location(entity.getBukkitEntity().getWorld(), vec.a, 0, vec.c));
+		entity.move(dx, dy, dz);
+		entity.checkMovement(dx, dy, dz);
 		return true;
 	}
 	
