@@ -23,26 +23,66 @@ public class NPC {
 		this.entity = entity;
 	}
 	
+	/**
+	 * Get an org.bukkit.entity.Player instance from the npc.
+	 * 
+	 * @return NPC's player instance.
+	 */
 	public Player getBukkitEntity() {
 		return entity.getBukkitEntity();
 	}
 	
+	/**
+	 * Check wether or not an npc can get damaged
+	 * 
+	 * @return NPC can be damaged?
+	 */
 	public boolean isInvulnerable() {
 		return entity.isInvulnerable();
 	}
 	
+	/**
+	 * Set wether or not an npc can get damaged
+	 * 
+	 * @param invulnerable NPC can be damaged?
+	 */
 	public void setInvulnerable(boolean invulnerable) {
 		entity.setInvulnerable(invulnerable);
 	}
 	
+	/**
+	 * Pathfinding methods
+	 */
+	
+	/**
+	 * Walk to a location
+	 * 
+	 * @param location Location to walk to
+	 * @return True if path created and applied correctly.
+	 */
 	public boolean pathfindTo(Location location) {
 		return pathfindTo(location, 0.2);
 	}
 	
+	/**
+	 * Walk to a location with custom speed
+	 * 
+	 * @param location Location to walk to
+	 * @param speed Speed to walk with (max 1.0, 0.2 default)
+	 * @return True if path created and applied correctly.
+	 */
 	public boolean pathfindTo(Location location, double speed) {
 		return pathfindTo(location, speed, 30.0D);
 	}
 	
+	/**
+	 * Walk to a location with custom speed and range.
+	 * 
+	 * @param location Location to walk to
+	 * @param speed Speed to walk with (max 1.0, 0.2 default)
+	 * @param range Block radius limit for path finding (30 default)
+	 * @return True if path created and applied correctly.
+	 */
 	public boolean pathfindTo(Location location, double speed, double range) {
 		NPCPath path = NPCPath.find(entity, location, range, speed);
 		return (this.path = path) != null;
@@ -67,19 +107,39 @@ public class NPC {
 	 */
 	private LivingEntity target;
 	
+	/**
+	 * Make NPC look at an entity.
+	 * 
+	 * @param target Entity to look at
+	 */
 	public void setTarget(LivingEntity target) {
 		this.target = target;
 		lookAt(target.getLocation());
 	}
 	
+	/**
+	 * Get the entity the ncp is looking at
+	 * 
+	 * @return Entity npc is looking at (null if not found)
+	 */
 	public LivingEntity getTarget() {
 		return target;
 	}
 	
+	/**
+	 * Make npc look at a certain location
+	 * 
+	 * @param location Location to look at
+	 */
 	public void lookAt(Location location) {
 		setYaw(getAngle(new Vector(entity.locX, 0, entity.locZ), location.toVector()));
 	}
 	
+	/**
+	 * Change npc's yaw the proper way
+	 * 
+	 * @param yaw New npc yaw
+	 */
 	public void setYaw(float yaw) {
 		entity.yaw = yaw;
 		entity.aP = yaw;
@@ -96,6 +156,12 @@ public class NPC {
 	
 	/**
 	 * Packet related methods
+	 */
+	
+	/**
+	 * Play an animcation on the npc
+	 * 
+	 * @param animcation Animcation type to display
 	 */
 	public void playAnimation(NPCAnimation animcation) {
 		broadcastPacket(new PacketPlayOutAnimation(entity, animcation.getId()));
