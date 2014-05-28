@@ -4,7 +4,7 @@
 
   <groupId>com.lenis0012.bukkit</groupId>
   <artifactId>NPCFactory</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>jar</packaging>
 
   <properties>
