@@ -58,7 +58,7 @@ public class NPCEntity extends EntityPlayer {
 		this.B();
 		
 		npc.onTick();
-		if(this.fireTicks <= 0 && world.getType(MathHelper.floor(locX), MathHelper.floor(locY), MathHelper.floor(locZ)).getMaterial() == Material.FIRE) {
+		if(world.getType(MathHelper.floor(locX), MathHelper.floor(locY), MathHelper.floor(locZ)).getMaterial() == Material.FIRE) {
 			setOnFire(15);
 		}
 	}
