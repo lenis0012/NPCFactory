@@ -158,7 +158,7 @@ public class NPCProfile extends GameProfile {
 		String uuid = id.toString().replaceAll("-", "");
 		try {
 			// Get the name from SwordPVP
-			URL url = new URL("https://uuid.swordpvp.com/session/" + uuid);
+			URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
 			URLConnection uc = url.openConnection();
 			uc.setUseCaches(false);
 			uc.setDefaultUseCaches(false);
@@ -198,40 +198,12 @@ public class NPCProfile extends GameProfile {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private static String getUUID(String name) {
-		String uuid = null;
-		try {
-			// Get the UUID from SwordPVP
-			URL url = new URL("https://uuid.swordpvp.com/uuid/" + name);
-			URLConnection uc = url.openConnection();
-			uc.setUseCaches(false);
-			uc.setDefaultUseCaches(false);
-			uc.addRequestProperty("User-Agent", "Mozilla/5.0");
-			uc.addRequestProperty("Cache-Control",
-					"no-cache, no-store, must-revalidate");
-			uc.addRequestProperty("Pragma", "no-cache");
-
-			// Parse it
-			Scanner scanner = new Scanner(uc.getInputStream(), "UTF-8");
-			String json = scanner.useDelimiter("\\A").next();
-			scanner.close();
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(json);
-			uuid = (String) ((JSONObject) ((JSONArray) ((JSONObject) obj)
-					.get("profiles")).get(0)).get("id");
-		} catch (Exception e) {
-			return "OfflinePlayer:" + name;
-		}
-
-		return uuid;
+		return Bukkit.getOfflinePlayer(name).getUniqueId().toString().replaceAll("-", "");
 	}
 
 	private static UUID parseUUID(String uuidStr) {
-		if(uuidStr.startsWith("OfflinePlayer:")) {
-			//Unregistered uuid, return fake one.
-			return UUID.nameUUIDFromBytes(uuidStr.getBytes(Charsets.UTF_8));
-		}
-		
 		// Split uuid in to 5 components
 		String[] uuidComponents = new String[] { uuidStr.substring(0, 8),
 				uuidStr.substring(8, 12), uuidStr.substring(12, 16),
