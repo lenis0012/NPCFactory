@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * NPCFactory main class, intializes and creates npcs.
@@ -60,6 +62,22 @@ public class NPCFactory implements Listener {
 		
 		NPCEntity npcEntity = (NPCEntity) ((CraftEntity) entity).getHandle();
 		return npcEntity.getNPC();
+	}
+	
+	public List<NPC> getNPCs() {
+		List<NPC> npcList = new ArrayList<NPC>();
+		for (World world : Bukkit.getWorlds()) {
+			npcList.addAll(getNPCs(world));
+		}
+		return npcList;
+	}
+	
+	public List<NPC> getNPCs(World world) {
+		List<NPC> npcList = new ArrayList<NPC>();
+		for (Entity entity : world.getEntities()) {
+			if (isNPC(entity)) npcList.add(this.getNPC(entity));
+		}
+		return npcList;
 	}
 	
 	/**
