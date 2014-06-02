@@ -51,6 +51,24 @@ public class NPC {
 	}
 	
 	/**
+	 * Check wether or not an npc has gravity enabled.
+	 * 
+	 * @return NPC had grvity?
+	 */
+	public boolean isGravity() {
+		return entity.isGravity();
+	}
+	
+	/**
+	 * Set wether or not an npc has gravity enabled.
+	 * 
+	 * @param gravity NPC has gravity?
+	 */
+	public void setGravity(boolean gravity) {
+		entity.setGravity(gravity);
+	}
+	
+	/**
 	 * Pathfinding methods
 	 */
 	

@@ -25,6 +25,7 @@ import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 public class NPCEntity extends EntityPlayer {
 	private final NPC npc;
 	private boolean invulnerable = true;
+	private boolean gravity = true;
 	
 	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
 		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile, new PlayerInteractManager(((CraftWorld) world).getHandle()));
@@ -44,6 +45,14 @@ public class NPCEntity extends EntityPlayer {
 		return npc;
 	}
 	
+	public boolean isGravity() {
+		return gravity;
+	}
+
+	public void setGravity(boolean gravity) {
+		this.gravity = gravity;
+	}
+
 	public boolean isInvulnerable() {
 		return invulnerable;
 	}
@@ -60,6 +69,16 @@ public class NPCEntity extends EntityPlayer {
 		npc.onTick();
 		if(world.getType(MathHelper.floor(locX), MathHelper.floor(locY), MathHelper.floor(locZ)).getMaterial() == Material.FIRE) {
 			setOnFire(15);
+		}
+		
+		//Apply velocity etc.
+		this.motY = onGround ? Math.max(0.0, motY) : motY;
+		move(motX, motY, motZ);
+		this.motX *= 0.800000011920929;
+		this.motY *= 0.800000011920929;
+		this.motZ *= 0.800000011920929;
+		if(gravity && !this.onGround) {
+			this.motY -= 0.1; //Most random value, don't judge.
 		}
 	}
 

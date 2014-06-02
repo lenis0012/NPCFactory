@@ -64,19 +64,34 @@ public class NPCFactory implements Listener {
 		return npcEntity.getNPC();
 	}
 	
+	/**
+	 * Get all npc's from all worlds.
+	 * 
+	 * @return A list of all npc's
+	 */
 	public List<NPC> getNPCs() {
 		List<NPC> npcList = new ArrayList<NPC>();
 		for (World world : Bukkit.getWorlds()) {
 			npcList.addAll(getNPCs(world));
 		}
+		
 		return npcList;
 	}
 	
+	/**
+	 * Get all npc's from a specific world
+	 * 
+	 * @param world World to get npc's from
+	 * @return A list of all npc's in the world
+	 */
 	public List<NPC> getNPCs(World world) {
 		List<NPC> npcList = new ArrayList<NPC>();
 		for (Entity entity : world.getEntities()) {
-			if (isNPC(entity)) npcList.add(this.getNPC(entity));
+			if (isNPC(entity)) {
+				npcList.add(getNPC(entity));
+			}
 		}
+		
 		return npcList;
 	}
 	
