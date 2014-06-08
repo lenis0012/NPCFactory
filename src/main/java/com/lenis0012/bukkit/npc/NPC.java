@@ -55,7 +55,7 @@ public interface NPC {
 	public boolean setBoots(ItemStack boots);
 	
 	/**
-	 * Set an NPC's held item.
+	 * Set an NPC's held itemstack.
 	 * 
 	 * @param gravity NPC has held item?
 	 */
