@@ -35,7 +35,7 @@ public interface NPC {
 	public Player getBukkitEntity();
 	
 	/**
-	 * Check wether or not an npc can get damaged
+	 * Check whether or not an npc can get damaged
 	 * 
 	 * @return NPC can be damaged?
 	 */
