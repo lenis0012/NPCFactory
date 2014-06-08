@@ -88,6 +88,28 @@ public class NPCEntity extends EntityPlayer implements NPC {
 		return (this.path = path) != null;
 	}
 	
+	@Override
+	public boolean setArmorContents(ItemStack[] armor) {
+		int id = getBukkitEntity().getEntityId();
+		PacketPlayOutEntityEquipment[] packet = new PacketPlayOutEntityEquipment[] {
+			new PacketPlayOutEntityEquipment(id, 4, CraftItemStack.asNMSCopy(armor[0])),
+			new PacketPlayOutEntityEquipment(id, 3, CraftItemStack.asNMSCopy(armor[1])),
+			new PacketPlayOutEntityEquipment(id, 2, CraftItemStack.asNMSCopy(armor[2])),
+			new PacketPlayOutEntityEquipment(id, 1, CraftItemStack.asNMSCopy(armor[3])) };
+		for (PacketPlayOutEntityEquipment packets : packet) {
+			broadcastLocalPacket(packets);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean setHeldItem(ItemStack hand) {
+		int id = getBukkitEntity().getEntityId();
+		PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(id, 0, CraftItemStack.asNMSCopy(hand));
+		broadcastLocalPacket(packet);
+		return true;
+	}
+	
 	/**
 	 * Look at functions
 	 */
