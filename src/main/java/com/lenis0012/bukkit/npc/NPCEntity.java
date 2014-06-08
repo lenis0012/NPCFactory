@@ -1,15 +1,19 @@
 package com.lenis0012.bukkit.npc;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R3.event.CraftEventFactory;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.util.Vector;
 
 import net.minecraft.server.v1_7_R3.DamageSource;
 import net.minecraft.server.v1_7_R3.Entity;
@@ -20,12 +24,16 @@ import net.minecraft.server.v1_7_R3.EntityPlayer;
 import net.minecraft.server.v1_7_R3.EnumGamemode;
 import net.minecraft.server.v1_7_R3.Material;
 import net.minecraft.server.v1_7_R3.MathHelper;
+import net.minecraft.server.v1_7_R3.Packet;
+import net.minecraft.server.v1_7_R3.PacketPlayOutAnimation;
 import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
-public class NPCEntity extends EntityPlayer {
-	private final NPC npc;
+public class NPCEntity extends EntityPlayer implements NPC {
 	private boolean invulnerable = true;
 	private boolean gravity = true;
+	
+	private LivingEntity target;
+	private NPCPath path;
 	
 	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
 		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile, new PlayerInteractManager(((CraftWorld) world).getHandle()));
@@ -33,7 +41,6 @@ public class NPCEntity extends EntityPlayer {
 		this.playerConnection = new NPCPlayerConnection(networkManager, this);
 		this.fauxSleeping = true;
 		this.bukkitEntity = new CraftPlayer((CraftServer) Bukkit.getServer(), this);
-		this.npc = new NPC(this);
 	}
 	
 	@Override
@@ -41,32 +48,121 @@ public class NPCEntity extends EntityPlayer {
 		return (CraftPlayer) bukkitEntity;
 	}
 	
-	public NPC getNPC() {
-		return npc;
-	}
-	
+	@Override
 	public boolean isGravity() {
 		return gravity;
 	}
 
+	@Override
 	public void setGravity(boolean gravity) {
 		this.gravity = gravity;
 	}
 
+	@Override
 	public boolean isInvulnerable() {
 		return invulnerable;
 	}
 
+	@Override
 	public void setInvulnerable(boolean invulnerable) {
 		this.invulnerable = invulnerable;
 	}
+	
+	/**
+	 * Pathfinding
+	 */
+	
+	@Override
+	public boolean pathfindTo(Location location) {
+		return pathfindTo(location, 0.2);
+	}
+
+	@Override
+	public boolean pathfindTo(Location location, double speed) {
+		return pathfindTo(location, speed, 30.0);
+	}
+	
+	@Override
+	public boolean pathfindTo(Location location, double speed, double range) {
+		NPCPath path = NPCPath.find(this, location, range, speed);
+		return (this.path = path) != null;
+	}
+	
+	/**
+	 * Look at functions
+	 */
+	
+	@Override
+	public void setTarget(LivingEntity target) {
+		this.target = target;
+		lookAt(target.getLocation());
+	}
+	
+	@Override
+	public LivingEntity getTarget() {
+		return target;
+	}
+	
+	@Override
+	public void lookAt(Location location) {
+		setYaw(getLocalAngle(new Vector(locX, 0, locZ), location.toVector()));
+	}
+	
+	@Override
+	public void setYaw(float yaw) {
+		this.yaw = yaw;
+		this.aP = yaw;
+		this.aO = yaw;
+	}
+	
+	private final float getLocalAngle(Vector point1, Vector point2) {
+		double dx = point2.getX() - point1.getX();
+		double dz = point2.getZ() - point1.getZ();
+		float angle = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90;
+		if(angle < 0) { angle += 360.0F; }
+		return angle;
+	}
+	
+	/**
+	 * Packet methods
+	 */
+	
+	@Override
+	public void playAnimation(NPCAnimation animation) {
+		broadcastLocalPacket(new PacketPlayOutAnimation(this, animation.getId()));
+	}
+	
+	private final int RADIUS = Bukkit.getViewDistance() * 16;
+	
+	private final void broadcastLocalPacket(Packet packet) {
+		for(Player p : getBukkitEntity().getWorld().getPlayers()) {
+			if(getBukkitEntity().getLocation().distanceSquared(p.getLocation()) <= RADIUS * RADIUS) {
+				((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+			}
+		}
+	}
+	
+	/**
+	 * Internal methods
+	 */
 	
 	@Override
 	public void h() {
 		super.h();
 		this.B();
 		
-		npc.onTick();
+		if(target != null && path == null) {
+			if(target.isDead() || (target instanceof Player && !((Player) target).isOnline())) {
+				this.target = null;
+			} else if(getBukkitEntity().getLocation().getWorld().equals(target.getWorld()) && getBukkitEntity().getLocation().distanceSquared(target.getLocation()) <= 32 * 32) {
+				lookAt(target.getLocation());
+			}
+		} if(path != null) {
+			if(!path.update()) {
+				this.path = null;
+			}
+		}
+		
 		if(world.getType(MathHelper.floor(locX), MathHelper.floor(locY), MathHelper.floor(locZ)).getMaterial() == Material.FIRE) {
 			setOnFire(15);
 		}
@@ -84,7 +180,7 @@ public class NPCEntity extends EntityPlayer {
 
 	@Override
 	public boolean a(EntityHuman entity) {
-		NPCInteractEvent event = new NPCInteractEvent(npc, entity.getBukkitEntity());
+		NPCInteractEvent event = new NPCInteractEvent(this, entity.getBukkitEntity());
 		Bukkit.getPluginManager().callEvent(event);
 		if(event.isCancelled()) {
 			return false;
@@ -137,7 +233,7 @@ public class NPCEntity extends EntityPlayer {
 		}
 		
 		if(cause != null) {
-			NPCDamageEvent event = new NPCDamageEvent(npc, bEntity, cause, (double) damage);
+			NPCDamageEvent event = new NPCDamageEvent(this, bEntity, cause, (double) damage);
 			Bukkit.getPluginManager().callEvent(event);
 			if(!event.isCancelled()) {
 				return super.damageEntity(source, (float) event.getDamage());

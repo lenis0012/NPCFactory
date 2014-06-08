@@ -46,7 +46,7 @@ public class NPCFactory implements Listener {
 		worldServer.addEntity(entity);
 		worldServer.players.remove(entity);
 		entity.getBukkitEntity().setMetadata("NPC", new FixedMetadataValue(plugin, true));
-		return entity.getNPC();
+		return entity;
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class NPCFactory implements Listener {
 		}
 		
 		NPCEntity npcEntity = (NPCEntity) ((CraftEntity) entity).getHandle();
-		return npcEntity.getNPC();
+		return npcEntity;
 	}
 	
 	/**
