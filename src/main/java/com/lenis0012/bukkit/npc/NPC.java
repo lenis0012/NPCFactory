@@ -11,7 +11,48 @@ import org.bukkit.entity.Player;
  */
 public interface NPC {
 
+	/**
+	 * Set an NPC's held armour contents.
+	 * 
+	 * @param gravity NPC has armor contents?
+	 */
+	 
 	public boolean setArmorContents(ItemStack[] armor);
+	
+	/**
+	 * Set an NPC's held item.
+	 * 
+	 * @param gravity NPC has held item?
+	 */
+	public boolean setHeldItem(ItemStack hand);
+	
+	/**
+	 * Set an NPC's helmet.
+	 * 
+	 * @param gravity NPC has helmet?
+	 */
+	public boolean setHelmet(ItemStack helmet);
+	
+	/**
+	 * Set an NPC's chestplate.
+	 * 
+	 * @param gravity NPC has chestplate?
+	 */
+	public boolean setChestplate(ItemStack chestplate);
+	
+	/**
+	 * Set an NPC's leggings.
+	 * 
+	 * @param gravity NPC has leggings?
+	 */
+	public boolean setLeggings(ItemStack leggings);
+	
+	/**
+	 * Set an NPC's boots.
+	 * 
+	 * @param gravity NPC has boots?
+	 */
+	public boolean setBoots(ItemStack boots);
 	
 	/**
 	 * Set an NPC's held item.
