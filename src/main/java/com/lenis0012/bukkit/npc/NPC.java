@@ -10,6 +10,22 @@ import org.bukkit.entity.Player;
  * @author lenis0012
  */
 public interface NPC {
+
+	public boolean setArmorContents(ItemStack[] armor);
+	
+	/**
+	 * Set an NPC's held item.
+	 * 
+	 * @param gravity NPC has held item?
+	 */
+	public boolean setHeldItem(ItemStack hand);
+
+	/**
+	 * Walk to a location
+	 * 
+	 * @param location Location to walk to
+	 * @return True if path created and applied correctly.
+	 */
 	
 	/**
 	 * Get an org.bukkit.entity.Player instance from the npc.
