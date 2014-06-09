@@ -1,8 +1,9 @@
 package com.lenis0012.bukkit.npc;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Class that contains all api functions from npc's in NPCFactory
@@ -78,14 +79,14 @@ public interface NPC {
 	 * 
 	 * @param target Entity to look at
 	 */
-	public void setTarget(LivingEntity target);
+	public void setTarget(Entity target);
 	
 	/**
 	 * Get the entity the ncp is looking at
 	 * 
 	 * @return Entity npc is looking at (null if not found)
 	 */
-	public LivingEntity getTarget();
+	public Entity getTarget();
 	
 	/**
 	 * Make npc look at a certain location
@@ -107,4 +108,12 @@ public interface NPC {
 	 * @param animcation Animcation type to display
 	 */
 	public void playAnimation(NPCAnimation animcation);
+	
+	/**
+	 * Set npc equipment.
+	 * 
+	 * @param slot Slot type for the equipment
+	 * @param item Item to put on slot
+	 */
+	public void setEquipment(EquipmentSlot slot, ItemStack item);
 }

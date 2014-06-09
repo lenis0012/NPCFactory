@@ -8,11 +8,12 @@ import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R3.event.CraftEventFactory;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import net.minecraft.server.v1_7_R3.DamageSource;
@@ -26,13 +27,14 @@ import net.minecraft.server.v1_7_R3.Material;
 import net.minecraft.server.v1_7_R3.MathHelper;
 import net.minecraft.server.v1_7_R3.Packet;
 import net.minecraft.server.v1_7_R3.PacketPlayOutAnimation;
+import net.minecraft.server.v1_7_R3.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
 public class NPCEntity extends EntityPlayer implements NPC {
 	private boolean invulnerable = true;
 	private boolean gravity = true;
 	
-	private LivingEntity target;
+	private org.bukkit.entity.Entity target;
 	private NPCPath path;
 	
 	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
@@ -93,13 +95,13 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	 */
 	
 	@Override
-	public void setTarget(LivingEntity target) {
+	public void setTarget(org.bukkit.entity.Entity target) {
 		this.target = target;
 		lookAt(target.getLocation());
 	}
 	
 	@Override
-	public LivingEntity getTarget() {
+	public org.bukkit.entity.Entity getTarget() {
 		return target;
 	}
 	
@@ -130,6 +132,11 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	@Override
 	public void playAnimation(NPCAnimation animation) {
 		broadcastLocalPacket(new PacketPlayOutAnimation(this, animation.getId()));
+	}
+	
+	@Override
+	public void setEquipment(EquipmentSlot slot, ItemStack item) {
+		broadcastLocalPacket(new PacketPlayOutEntityEquipment(getId(), slot.getId(), CraftItemStack.asNMSCopy(item)));
 	}
 	
 	private final int RADIUS = Bukkit.getViewDistance() * 16;
@@ -180,7 +187,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
 
 	@Override
 	public boolean a(EntityHuman entity) {
-		NPCInteractEvent event = new NPCInteractEvent(this, entity.getBukkitEntity());
+		NPCInteractEvent event = new NPCInteractEvent(this, getBukkitEntity());
 		Bukkit.getPluginManager().callEvent(event);
 		if(event.isCancelled()) {
 			return false;
