@@ -152,7 +152,15 @@ public interface NPC {
 	public void playAnimation(NPCAnimation animation);
 	
 	/**
-	 * Set if an npc with collide with other entities.
+	 * Get if an npc with collide with other entities.
+	 * 
+	 * @param location Get entity collision for npc.
+	 * @return
+	 */
+	public boolean getEntityCollision();
+	
+	/**
+	 * Set if an npc can collide with other entities.
 	 * 
 	 * @param location Set entity collision for npc.
 	 * @return
