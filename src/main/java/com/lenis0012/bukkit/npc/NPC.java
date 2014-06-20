@@ -116,4 +116,21 @@ public interface NPC {
 	 * @param item Item to put on slot
 	 */
 	public void setEquipment(EquipmentSlot slot, ItemStack item);
+	
+		/**
+	 * Get if an npc with collide with other entities.
+	 * 
+	 * @param location Get entity collision for npc.
+	 * @return
+	 */
+	public boolean getEntityCollision();
+	
+	/**
+	 * Set if an npc with collide with other entities.
+	 * 
+	 * @param location Set entity collision for npc.
+	 * @return
+	 */
+	public void setEntityCollision(boolean entityCollision);
+	
 }
