@@ -31,6 +31,7 @@ import net.minecraft.server.v1_7_R3.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
 public class NPCEntity extends EntityPlayer implements NPC {
+	private boolean entityCollision = true;
 	private boolean invulnerable = true;
 	private boolean gravity = true;
 	
@@ -265,6 +266,29 @@ public class NPCEntity extends EntityPlayer implements NPC {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	@Override
+	public boolean getEntityCollision() {
+		return this.entityCollision;
+	}
+	
+	@Override
+	public void setEntityCollision(boolean entityCollision) {
+		this.entityCollision = entityCollision;
+	}
+
+	@Override
+	public void g(double x, double y, double z) {
+		if (getBukkitEntity() == null) {
+			super.g(x, y, z);
+			return;
+		} 
+
+		if (getEntityCollision()) {
+			super.g(x, y, z);
+			return;
 		}
 	}
 }
