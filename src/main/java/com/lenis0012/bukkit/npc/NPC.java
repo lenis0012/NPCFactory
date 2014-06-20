@@ -1,4 +1,4 @@
-package hardcore.npc.lib;
+package com.lenis0012.bukkit.npc;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
