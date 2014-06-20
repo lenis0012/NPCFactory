@@ -149,6 +149,14 @@ public interface NPC {
 	 * 
 	 * @param animation Animcation type to display.
 	 */
-	public void playAnimation(NPCAnimation animcation);
+	public void playAnimation(NPCAnimation animation);
+	
+	/**
+	 * Set if an npc with collide with other entities.
+	 * 
+	 * @param location Set entity collision for npc.
+	 * @return
+	 */
+	public void setEntityCollision(boolean entityCollision);
 	
 }
