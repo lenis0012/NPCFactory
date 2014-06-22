@@ -281,14 +281,9 @@ public class NPCEntity extends EntityPlayer implements NPC {
 
 	@Override
 	public void g(double x, double y, double z) {
-		if (getBukkitEntity() == null) {
+		if (getBukkitEntity() != null && getEntityCollision()) {
 			super.g(x, y, z);
 			return;
 		} 
-
-		if (getEntityCollision()) {
-			super.g(x, y, z);
-			return;
-		}
 	}
 }
