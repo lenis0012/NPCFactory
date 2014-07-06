@@ -34,7 +34,7 @@ new Thread() {
 	}
 }.start();
 ```
-You can also play animations on status, they are shown in NPCAnimcatino.java:
+You can also play animations on status, they are shown in NPCAnimation.java:
 ```java
 npc.playAnimation(NPCAnimation.SWING_ARM); //Swings npc's arm
 npc.playAnimation(NPCAnimation.DAMAGE); //Displays red color on skin to mark player as hit.
