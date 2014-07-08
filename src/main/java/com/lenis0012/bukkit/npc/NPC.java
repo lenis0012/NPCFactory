@@ -82,7 +82,7 @@ public interface NPC {
 	public void setTarget(Entity target);
 	
 	/**
-	 * Get the entity the ncp is looking at
+	 * Get the entity the npc is looking at
 	 * 
 	 * @return Entity npc is looking at (null if not found)
 	 */
@@ -103,11 +103,11 @@ public interface NPC {
 	public void setYaw(float yaw);
 	
 	/**
-	 * Play an animcation on the npc
+	 * Play an animation on the npc
 	 * 
-	 * @param animcation Animcation type to display
+	 * @param animation Animation type to display
 	 */
-	public void playAnimation(NPCAnimation animcation);
+	public void playAnimation(NPCAnimation animation);
 	
 	/**
 	 * Set npc equipment.
