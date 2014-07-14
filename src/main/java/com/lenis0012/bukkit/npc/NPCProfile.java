@@ -158,7 +158,7 @@ public class NPCProfile extends GameProfile {
 		String uuid = id.toString().replaceAll("-", "");
 		try {
 			// Get the name from SwordPVP
-			URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
+			URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
 			URLConnection uc = url.openConnection();
 			uc.setUseCaches(false);
 			uc.setDefaultUseCaches(false);
