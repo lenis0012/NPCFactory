@@ -1,5 +1,6 @@
 package com.lenis0012.bukkit.npc;
 
+import net.minecraft.server.v1_7_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,6 +10,7 @@ import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R3.event.CraftEventFactory;
 import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftItemStack;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
@@ -16,24 +18,16 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import net.minecraft.server.v1_7_R3.DamageSource;
-import net.minecraft.server.v1_7_R3.Entity;
-import net.minecraft.server.v1_7_R3.EntityDamageSource;
-import net.minecraft.server.v1_7_R3.EntityDamageSourceIndirect;
-import net.minecraft.server.v1_7_R3.EntityHuman;
-import net.minecraft.server.v1_7_R3.EntityPlayer;
-import net.minecraft.server.v1_7_R3.EnumGamemode;
-import net.minecraft.server.v1_7_R3.Material;
-import net.minecraft.server.v1_7_R3.MathHelper;
-import net.minecraft.server.v1_7_R3.Packet;
-import net.minecraft.server.v1_7_R3.PacketPlayOutAnimation;
-import net.minecraft.server.v1_7_R3.PacketPlayOutEntityEquipment;
-import net.minecraft.server.v1_7_R3.PlayerInteractManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class NPCEntity extends EntityPlayer implements NPC {
 	private boolean entityCollision = true;
 	private boolean invulnerable = true;
 	private boolean gravity = true;
+    private boolean lying = false;
+
 	
 	private org.bukkit.entity.Entity target;
 	private NPCPath path;
@@ -70,6 +64,11 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	public void setInvulnerable(boolean invulnerable) {
 		this.invulnerable = invulnerable;
 	}
+
+        @Override
+        public boolean isLying(){
+            return lying;
+        }
 	
 	/**
 	 * Pathfinding
@@ -129,6 +128,16 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	/**
 	 * Packet methods
 	 */
+        @Override
+        public void setLying(double x, double y, double z){
+            if(!lying){
+                broadcastLocalPacket(new PacketPlayOutBed(getBukkitEntity().getHandle(), (int)x, (int)y, (int)z));
+                lying = true;
+            }else if(((Double)x == null && (Double)y == null && (Double)z == null) && lying){
+                broadcastLocalPacket(new PacketPlayOutAnimation(this, 2));
+                lying = false;
+            }
+        }
 	
 	@Override
 	public void playAnimation(NPCAnimation animation) {

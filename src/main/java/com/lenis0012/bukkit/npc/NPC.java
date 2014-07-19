@@ -1,6 +1,7 @@
 package com.lenis0012.bukkit.npc;
 
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,32 +21,57 @@ public interface NPC {
 	public Player getBukkitEntity();
 	
 	/**
-	 * Check wether or not an npc can get damaged
+	 * Check whether or not an npc can get damaged
 	 * 
 	 * @return NPC can be damaged?
 	 */
 	public boolean isInvulnerable();
 	
 	/**
-	 * Set wether or not an npc can get damaged
+	 * Set whether or not an npc can get damaged
 	 * 
 	 * @param invulnerable NPC can be damaged?
 	 */
 	public void setInvulnerable(boolean invulnerable);
 	
 	/**
-	 * Check wether or not an npc has gravity enabled.
+	 * Check whether or not an npc has gravity enabled.
 	 * 
-	 * @return NPC had grvity?
+	 * @return NPC had gravity?
 	 */
 	public boolean isGravity();
 	
 	/**
-	 * Set wether or not an npc has gravity enabled.
+	 * Set whether or not an npc has gravity enabled.
 	 * 
 	 * @param gravity NPC has gravity?
 	 */
 	public void setGravity(boolean gravity);
+
+    /**
+     * Sets the player lying down or standing up.
+     * Proper use of NPCAnimation.LEAVE_BED;
+     * @param x the body's x co-ordinate
+     * (Set to null to make entity stand up)
+     * @param y the body's y co-ordinate
+     * (Set to null to make entity stand up)
+     * @param z the body's z co-ordinate
+     * (Set to null to make entity stand up)
+     *
+     * Will only make NPC stand up if all
+     * 3 co-ordinates are set to null and
+     * NPC is lying down.
+     */
+
+    public void setLying(double x, double y, double z);
+
+    /**
+     * Checks whether the entity is lying down
+     * @return Boolean value of whether the entity is lying down
+     */
+
+    public boolean isLying();
+
 	
 	/**
 	 * Walk to a location
