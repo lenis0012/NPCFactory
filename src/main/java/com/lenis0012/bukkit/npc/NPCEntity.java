@@ -1,34 +1,34 @@
 package com.lenis0012.bukkit.npc;
 
+import net.minecraft.server.v1_7_R4.DamageSource;
+import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityDamageSource;
+import net.minecraft.server.v1_7_R4.EntityDamageSourceIndirect;
+import net.minecraft.server.v1_7_R4.EntityHuman;
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+import net.minecraft.server.v1_7_R4.EnumGamemode;
+import net.minecraft.server.v1_7_R4.Material;
+import net.minecraft.server.v1_7_R4.MathHelper;
+import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.PacketPlayOutAnimation;
+import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_7_R4.PlayerInteractManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_7_R3.event.CraftEventFactory;
-import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
-import net.minecraft.server.v1_7_R3.DamageSource;
-import net.minecraft.server.v1_7_R3.Entity;
-import net.minecraft.server.v1_7_R3.EntityDamageSource;
-import net.minecraft.server.v1_7_R3.EntityDamageSourceIndirect;
-import net.minecraft.server.v1_7_R3.EntityHuman;
-import net.minecraft.server.v1_7_R3.EntityPlayer;
-import net.minecraft.server.v1_7_R3.EnumGamemode;
-import net.minecraft.server.v1_7_R3.Material;
-import net.minecraft.server.v1_7_R3.MathHelper;
-import net.minecraft.server.v1_7_R3.Packet;
-import net.minecraft.server.v1_7_R3.PacketPlayOutAnimation;
-import net.minecraft.server.v1_7_R3.PacketPlayOutEntityEquipment;
-import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
 public class NPCEntity extends EntityPlayer implements NPC {
 	private boolean entityCollision = true;
@@ -157,7 +157,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	@Override
 	public void h() {
 		super.h();
-		this.B();
+		this.C();
 		
 		if(target != null && path == null) {
 			if(target.isDead() || (target instanceof Player && !((Player) target).isOnline())) {

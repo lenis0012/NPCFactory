@@ -3,7 +3,7 @@ package com.lenis0012.bukkit.npc;
 import java.lang.reflect.Field;
 import java.net.SocketAddress;
 
-import net.minecraft.server.v1_7_R3.NetworkManager;
+import net.minecraft.server.v1_7_R4.NetworkManager;
 
 public class NPCNetworkManager extends NetworkManager {
 

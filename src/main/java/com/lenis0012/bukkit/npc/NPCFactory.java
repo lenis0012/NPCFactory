@@ -1,20 +1,21 @@
 package com.lenis0012.bukkit.npc;
 
-import net.minecraft.server.v1_7_R3.WorldServer;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.server.v1_7_R4.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * NPCFactory main class, intializes and creates npcs.
