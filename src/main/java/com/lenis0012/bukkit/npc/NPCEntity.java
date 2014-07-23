@@ -11,6 +11,7 @@ import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketPlayOutAnimation;
+import net.minecraft.server.v1_7_R4.PacketPlayOutBed;
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_7_R4.PlayerInteractManager;
 
@@ -34,6 +35,8 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	private boolean entityCollision = true;
 	private boolean invulnerable = true;
 	private boolean gravity = true;
+    private boolean lying = false;
+
 	
 	private org.bukkit.entity.Entity target;
 	private NPCPath path;
@@ -70,6 +73,11 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	public void setInvulnerable(boolean invulnerable) {
 		this.invulnerable = invulnerable;
 	}
+
+        @Override
+        public boolean isLying(){
+            return lying;
+        }
 	
 	/**
 	 * Pathfinding
@@ -129,6 +137,16 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	/**
 	 * Packet methods
 	 */
+        @Override
+        public void setLying(double x, double y, double z){
+            if(!lying){
+                broadcastLocalPacket(new PacketPlayOutBed(getBukkitEntity().getHandle(), (int)x, (int)y, (int)z));
+                lying = true;
+            }else if(((Double)x == null && (Double)y == null && (Double)z == null) && lying){
+                broadcastLocalPacket(new PacketPlayOutAnimation(this, 2));
+                lying = false;
+            }
+        }
 	
 	@Override
 	public void playAnimation(NPCAnimation animation) {
