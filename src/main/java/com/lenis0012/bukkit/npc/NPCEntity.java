@@ -26,7 +26,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	private boolean entityCollision = true;
 	private boolean invulnerable = true;
 	private boolean gravity = true;
-    private boolean lying = false;
+	private boolean lying = false;
 
 	
 	private org.bukkit.entity.Entity target;
