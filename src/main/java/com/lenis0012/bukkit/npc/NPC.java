@@ -47,32 +47,31 @@ public interface NPC {
 	 * @param gravity NPC has gravity?
 	 */
 	public void setGravity(boolean gravity);
-
-    /**
-     * Sets the player lying down or standing up.
-     * Proper use of NPCAnimation.LEAVE_BED;
-     * @param x the body's x co-ordinate
-     * (Set to null to make entity stand up)
-     * @param y the body's y co-ordinate
-     * (Set to null to make entity stand up)
-     * @param z the body's z co-ordinate
-     * (Set to null to make entity stand up)
-     *
-     * Will only make NPC stand up if all
-     * 3 co-ordinates are set to null and
-     * NPC is lying down.
-     */
-
-    public void setLying(double x, double y, double z);
-
-    /**
-     * Checks whether the entity is lying down
-     * @return Boolean value of whether the entity is lying down
-     */
-
-    public boolean isLying();
-
 	
+	/**
+	 * Sets the player lying down or standing up.
+	 * Proper use of NPCAnimation.LEAVE_BED;
+	 * @param x the body's x co-ordinate
+     	 * (Set to null to make entity stand up)
+	 * @param y the body's y co-ordinate
+	 * (Set to null to make entity stand up)
+     	 * @param z the body's z co-ordinate
+     	 * (Set to null to make entity stand up)
+	 *
+      	 * Will only make NPC stand up if all
+     	 * 3 co-ordinates are set to null and
+     	 * NPC is lying down.
+     	 */
+
+    	public void setLying(double x, double y, double z);
+
+    	/**
+     	* Checks whether the entity is lying down
+	* @return Boolean value of whether the entity is lying down
+     	*/
+
+    	public boolean isLying();
+
 	/**
 	 * Walk to a location
 	 * 
