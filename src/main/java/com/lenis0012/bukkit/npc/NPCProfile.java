@@ -8,17 +8,17 @@ import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import net.minecraft.util.com.mojang.authlib.GameProfile;
+import net.minecraft.util.com.mojang.authlib.properties.Property;
+import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import net.minecraft.util.org.apache.commons.lang3.builder.ToStringBuilder;
+
 import org.bukkit.Bukkit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.google.common.base.Charsets;
-
-import net.minecraft.util.com.mojang.authlib.GameProfile;
-import net.minecraft.util.com.mojang.authlib.properties.Property;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
-import net.minecraft.util.org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * NPCProfile represents GameProfile in a more easy-to-use way.

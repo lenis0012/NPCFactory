@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.npc;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

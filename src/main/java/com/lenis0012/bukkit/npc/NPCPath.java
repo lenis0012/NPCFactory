@@ -1,8 +1,8 @@
 package com.lenis0012.bukkit.npc;
 
-import net.minecraft.server.v1_7_R3.MathHelper;
-import net.minecraft.server.v1_7_R3.PathEntity;
-import net.minecraft.server.v1_7_R3.Vec3D;
+import net.minecraft.server.v1_7_R4.MathHelper;
+import net.minecraft.server.v1_7_R4.PathEntity;
+import net.minecraft.server.v1_7_R4.Vec3D;
 
 import org.bukkit.Location;
 
