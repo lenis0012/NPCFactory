@@ -10,7 +10,6 @@ import net.minecraft.util.com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class NPCProfile {
     private static final Cache<String, Property> TEXTURE_CACHE = CacheBuilder.newBuilder()
-            .expireAfterWrite(5L, TimeUnit.MINUTES)
+            .expireAfterWrite(30L, TimeUnit.MINUTES)
             .build(new CacheLoader<String, Property>() {
                 @Override
                 public Property load(String key) throws Exception {
@@ -41,10 +40,15 @@ public class NPCProfile {
      * @param skinOwner Owner of profile skin
      * @return NPCProfile
      */
-    public static NPCProfile loadProfile(String name, String skinOwner) throws ExecutionException {
-        final GameProfile profile = new GameProfile(UUID.randomUUID(), name);
-        profile.getProperties().put("textures", TEXTURE_CACHE.get(skinOwner));
-        return new NPCProfile(profile);
+    public static NPCProfile loadProfile(String name, String skinOwner) {
+        try {
+            final GameProfile profile = new GameProfile(UUID.randomUUID(), name);
+            profile.getProperties().put("textures", TEXTURE_CACHE.get(skinOwner));
+            return new NPCProfile(profile);
+        } catch(Exception e) {
+            //Make sure that we don't return any exceptions
+            return new NPCProfile(name);
+        }
     }
 
     private final GameProfile handle;
