@@ -42,7 +42,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	private NPCPath path;
 	
 	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
-		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile, new PlayerInteractManager(((CraftWorld) world).getHandle()));
+		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile.getHandle(), new PlayerInteractManager(((CraftWorld) world).getHandle()));
 		playerInteractManager.b(EnumGamemode.SURVIVAL);
 		this.playerConnection = new NPCPlayerConnection(networkManager, this);
 		this.fauxSleeping = true;
