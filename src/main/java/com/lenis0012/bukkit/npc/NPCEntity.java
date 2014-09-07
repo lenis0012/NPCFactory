@@ -32,7 +32,7 @@ import net.minecraft.server.v1_7_R3.PlayerInteractManager;
 
 public class NPCEntity extends EntityPlayer implements NPC {
 	private boolean entityCollision = true;
-	private boolean invulnerable = true;
+	private boolean godmode = true;
 	private boolean gravity = true;
 	
 	private org.bukkit.entity.Entity target;
@@ -62,13 +62,13 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	}
 
 	@Override
-	public boolean isInvulnerable() {
-		return invulnerable;
+	public boolean isGodmode() {
+		return godmode;
 	}
 
 	@Override
-	public void setInvulnerable(boolean invulnerable) {
-		this.invulnerable = invulnerable;
+	public void setGodmode(boolean godmode) {
+		this.godmode = godmode;
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
 
 	@Override
 	public boolean damageEntity(DamageSource source, float damage) {
-		if(invulnerable || noDamageTicks > 0) {
+		if(godmode || noDamageTicks > 0) {
 			return false;
 		}
 		

@@ -24,14 +24,14 @@ public interface NPC {
 	 * 
 	 * @return NPC can be damaged?
 	 */
-	public boolean isInvulnerable();
+	public boolean isGodmode();
 	
 	/**
 	 * Set wether or not an npc can get damaged
 	 * 
 	 * @param invulnerable NPC can be damaged?
 	 */
-	public void setInvulnerable(boolean invulnerable);
+	public void setGodmode(boolean invulnerable);
 	
 	/**
 	 * Check wether or not an npc has gravity enabled.
