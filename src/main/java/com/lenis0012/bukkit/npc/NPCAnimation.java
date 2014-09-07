@@ -2,6 +2,9 @@ package com.lenis0012.bukkit.npc;
 
 /**
  * Animation types that can be displayed on an npc.
+ * Removed LEAVE_BED animation as it didn't do
+ * what lenis0012 thought it did.
+ * Redundant animation, therefore removed.
  * 
  * @author lenis0012
  */
@@ -14,10 +17,6 @@ public enum NPCAnimation {
 	 * Highlights the npc in red to mark that it has been damaged.
 	 */
 	DAMAGE(1),
-	/**
-	 * Makes an npc lay down or stand up.
-	 */
-	LEAVE_BED(2),
 	/**
 	 * Moves npc's arm towards his mouth to eat food.
 	 */
