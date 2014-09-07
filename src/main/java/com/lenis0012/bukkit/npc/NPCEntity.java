@@ -14,6 +14,7 @@ import net.minecraft.server.v1_7_R4.PacketPlayOutAnimation;
 import net.minecraft.server.v1_7_R4.PacketPlayOutBed;
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_7_R4.PlayerInteractManager;
+import net.minecraft.server.v1_7_R4.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -41,12 +42,17 @@ public class NPCEntity extends EntityPlayer implements NPC {
 	private org.bukkit.entity.Entity target;
 	private NPCPath path;
 	
-	public NPCEntity(World world, NPCProfile profile, NPCNetworkManager networkManager) {
+	public NPCEntity(World world, Location location, NPCProfile profile, NPCNetworkManager networkManager) {
 		super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile.getHandle(), new PlayerInteractManager(((CraftWorld) world).getHandle()));
 		playerInteractManager.b(EnumGamemode.SURVIVAL);
 		this.playerConnection = new NPCPlayerConnection(networkManager, this);
 		this.fauxSleeping = true;
 		this.bukkitEntity = new CraftPlayer((CraftServer) Bukkit.getServer(), this);
+		
+		WorldServer worldServer = ((CraftWorld) world).getHandle();
+		setPositionRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+		worldServer.addEntity(this);
+		worldServer.players.remove(this);
 	}
 	
 	@Override

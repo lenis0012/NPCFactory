@@ -3,12 +3,9 @@ package com.lenis0012.bukkit.npc;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_7_R4.WorldServer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -41,11 +38,7 @@ public class NPCFactory implements Listener {
 	 */
 	public NPC spawnHumanNPC(Location location, NPCProfile profile) {
 		World world = location.getWorld();
-		WorldServer worldServer = ((CraftWorld) world).getHandle();
-		NPCEntity entity = new NPCEntity(world, profile, networkManager);
-		entity.setPositionRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-		worldServer.addEntity(entity);
-		worldServer.players.remove(entity);
+		NPCEntity entity = new NPCEntity(world, location, profile, networkManager);
 		entity.getBukkitEntity().setMetadata("NPC", new FixedMetadataValue(plugin, true));
 		return entity;
 	}
