@@ -1,8 +1,6 @@
 package com.lenis0012.bukkit.npc;
 
-import net.minecraft.server.v1_7_R4.EntityPlayer;
-import net.minecraft.server.v1_7_R4.NetworkManager;
-import net.minecraft.server.v1_7_R4.PlayerConnection;
+import net.minecraft.server.v1_7_R4.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
