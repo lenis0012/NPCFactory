@@ -54,8 +54,11 @@ public class NPCFactory implements Listener {
 			return null;
 		}
 		
-		NPCEntity npcEntity = (NPCEntity) ((CraftEntity) entity).getHandle();
-		return npcEntity;
+		try {
+			return (NPCEntity) ((CraftEntity) entity).getHandle();
+		} catch(Exception ignored) {
+			return null;
+		}
 	}
 	
 	/**
