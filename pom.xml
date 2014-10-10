@@ -19,9 +19,10 @@
     </repositories>
 
     <dependencies>
+        <!-- I noticed it's best to avoid using md5's repo since it downloads a corrupt jar. -->
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
             <version>1.7.10-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

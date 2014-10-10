@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.npc;
 
-import java.net.SocketAddress;
-
+import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.util.io.netty.channel.AbstractChannel;
 import net.minecraft.util.io.netty.channel.Channel;
 import net.minecraft.util.io.netty.channel.ChannelConfig;
@@ -10,11 +9,14 @@ import net.minecraft.util.io.netty.channel.ChannelOutboundBuffer;
 import net.minecraft.util.io.netty.channel.DefaultChannelConfig;
 import net.minecraft.util.io.netty.channel.EventLoop;
 
+import java.net.SocketAddress;
+
 public class NPCChannel extends AbstractChannel {
 	private final ChannelConfig config = new DefaultChannelConfig(this);
 	
 	protected NPCChannel(Channel parent) {
 		super(parent);
+                attr(NetworkManager.protocolVersion).set(5); // 1.7
 	}
 
 	@Override
