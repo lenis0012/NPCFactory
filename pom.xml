@@ -19,6 +19,8 @@
     </repositories>
 
     <dependencies>
+        <!-- As CraftBukkit is no longer available for download, you have to provide
+        the file by yourself (Local repo, private repo, system path, ...). -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
