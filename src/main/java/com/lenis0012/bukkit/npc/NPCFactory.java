@@ -1,18 +1,21 @@
 package com.lenis0012.bukkit.npc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R4.metadata.PlayerMetadataStore;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * NPCFactory main class, intializes and creates npcs.
@@ -26,8 +29,24 @@ public class NPCFactory implements Listener {
 	public NPCFactory(Plugin plugin) {
 		this.plugin = plugin;
 		this.networkManager = new NPCNetworkManager();
+          
+                // See #19
+                CraftServer server = (CraftServer) Bukkit.getServer();
+                try {
+                  Field field = server.getClass().getDeclaredField("playerMetadata");
+                  field.setAccessible(true);
+                  PlayerMetadataStore metadata = (PlayerMetadataStore) field.get(server);
+                  if(!(metadata instanceof NPCMetadataStore)) {
+                    field.set(server, new NPCMetadataStore());
+                  }
+                } catch (NoSuchFieldException e) {
+                  e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                  e.printStackTrace();
+                }
+          
 		Bukkit.getPluginManager().registerEvents(this, plugin);
-	}
+        }
 	
 	/**
 	 * Spawn a new npc at a speciafied location.
