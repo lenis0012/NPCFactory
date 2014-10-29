@@ -1,19 +1,29 @@
 package com.lenis0012.bukkit.npc;
 
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_7_R4.PlayerConnection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R4.metadata.PlayerMetadataStore;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +35,8 @@ import java.util.List;
 public class NPCFactory implements Listener {
 	private final Plugin plugin;
 	private final NPCNetworkManager networkManager;
+        private boolean spigot;
+        private Method removePlayerInfo;
 	
 	public NPCFactory(Plugin plugin) {
 		this.plugin = plugin;
@@ -44,11 +56,23 @@ public class NPCFactory implements Listener {
                 } catch (IllegalAccessException e) {
                   e.printStackTrace();
                 }
-          
+                checkSpigot();
 		Bukkit.getPluginManager().registerEvents(this, plugin);
         }
-	
-	/**
+
+  private void checkSpigot() {
+    this.spigot = Bukkit.getVersion().contains("Spigot");
+    if (this.spigot) {
+      try {
+        this.removePlayerInfo = PacketPlayOutPlayerInfo.class.getDeclaredMethod("removePlayer", EntityPlayer.class);
+      } catch (NoSuchMethodException e) {
+        plugin.getLogger().severe("Failed to get removePlayer(EntityPlayer) from PacketPlayOutPlayerInfo:");
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
 	 * Spawn a new npc at a speciafied location.
 	 * 
 	 * @param location Location to spawn npc at.
@@ -149,4 +173,31 @@ public class NPCFactory implements Listener {
 			despawnAll();
 		}
 	}
+  
+  @EventHandler
+  public void onPlayerJoin(final PlayerJoinEvent event) {
+    if (!this.spigot) {
+      return;
+    }
+    // Would definitely prefer modifying packets using ProtocolLib though.
+    // This delayed task is necessary since the client won't process these packets too quickly.
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        if (!event.getPlayer().isOnline()) { // Might get disconnected that quick for whatever reason.
+          return;
+        }
+        try {
+          PlayerConnection conn = ((CraftPlayer) event.getPlayer()).getHandle().playerConnection;
+          for (final NPC npc : getNPCs()) {
+            conn.sendPacket((Packet) removePlayerInfo.invoke(null, (((NPCEntity) npc))));
+          }
+        } catch (IllegalAccessException e) {
+          e.printStackTrace();
+        } catch (InvocationTargetException e) {
+          e.printStackTrace();
+        }
+      }
+    }.runTaskLater(plugin, 10); // even with a 10 tick delay, not all names get removed.
+  }
 }
