@@ -22,9 +22,9 @@ public class NPCProfile {
     private final GameProfile handle;
 
     /**
-     * Return a profile with a steve skin.
+     * Returns a profile with a steve skin.
      *
-     * @param name Display name of profile
+     * @param name the display name of profile
      */
     public NPCProfile(String name) {
         this(new GameProfile(UUID.randomUUID(), name));
@@ -59,8 +59,7 @@ public class NPCProfile {
     public static NPCProfile loadProfile(String name, String skinOwner) {
         try {
             final GameProfile profile = new GameProfile(UUID.randomUUID(), name);
-            //TODO: Needs fixing.
-            //profile.getProperties().put("textures", TEXTURE_CACHE.get(skinOwner));
+            profile.getProperties().put("textures", TEXTURE_CACHE.get(skinOwner, null));
             return new NPCProfile(profile);
         } catch (Exception ex) {
             //Make sure that we don't return any exceptions

@@ -191,7 +191,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
             setOnFire(15);
         }
 
-        //Apply velocity etc.
+        // Apply velocity etc.
         this.motY = onGround ? Math.max(0.0, motY) : motY;
         move(motX, motY, motZ);
         this.motX *= 0.800000011920929;

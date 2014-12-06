@@ -1,5 +1,7 @@
 package com.lenis0012.bukkit.npc;
 
+import com.lenis0012.bukkit.npc.event.NPCDamageEvent;
+import com.lenis0012.bukkit.npc.event.NPCDeathEvent;
 import net.minecraft.server.v1_8_R1.EntityPlayer;
 import net.minecraft.server.v1_8_R1.Packet;
 import net.minecraft.server.v1_8_R1.PacketPlayOutPlayerInfo;
@@ -15,6 +17,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -37,7 +40,6 @@ public class NPCFactory implements Listener {
 
     private final Plugin plugin;
     private final NPCNetworkManager networkManager;
-    private boolean spigot;
     private Method removePlayerInfo;
 
     public NPCFactory(Plugin plugin) {
@@ -59,20 +61,8 @@ public class NPCFactory implements Listener {
         } catch (IllegalAccessException ex) {
             ex.printStackTrace();
         }
-        checkSpigot();
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
 
-    private void checkSpigot() {
-        this.spigot = Bukkit.getVersion().contains("Spigot");
-        if (this.spigot) {
-            try {
-                this.removePlayerInfo = PacketPlayOutPlayerInfo.class.getDeclaredMethod("removePlayer", EntityPlayer.class);
-            } catch (NoSuchMethodException ex) {
-                plugin.getLogger().severe("Failed to get removePlayer(EntityPlayer) from PacketPlayOutPlayerInfo:");
-                ex.printStackTrace();
-            }
-        }
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
@@ -122,7 +112,7 @@ public class NPCFactory implements Listener {
     }
 
     /**
-     * Gets all npc's from a specific world
+     * Gets all NPC's from a specific world
      *
      * @param world the world to get npc's from
      * @return list of all npc's in the world
@@ -142,7 +132,7 @@ public class NPCFactory implements Listener {
      * Checks if an entity is a NPC.
      *
      * @param entity the entity to check.
-     * @return true if entity is an npc
+     * @return true if entity is an NPC
      */
     public boolean isNPC(Entity entity) {
         return entity.hasMetadata("NPC");
@@ -180,33 +170,13 @@ public class NPCFactory implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(final PlayerJoinEvent event) {
-        if (!this.spigot) {
-            return;
+    public void onEntityDamage(NPCDamageEvent event) {
+        NPC npc = event.getNpc();
+        double damage = event.getDamage();
+        double health = npc.getBukkitEntity().getHealth();
+        if (health - damage <= 0) {
+            NPCDeathEvent deathEvent = new NPCDeathEvent(npc);
+            Bukkit.getPluginManager().callEvent(deathEvent);
         }
-
-        final Player player = event.getPlayer();
-
-        // Would definitely prefer modifying packets using ProtocolLib though.
-        // This delayed task is necessary since the client won't process these packets too quickly.
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!player.isOnline()) { // Might get disconnected that quick for whatever reason.
-                    return;
-                }
-
-                try {
-                    PlayerConnection conn = ((CraftPlayer) player).getHandle().playerConnection;
-                    for (final NPC npc : getNPCs()) {
-                        conn.sendPacket((Packet) removePlayerInfo.invoke(null, (((NPCEntity) npc))));
-                    }
-                } catch (IllegalAccessException ex) {
-                    ex.printStackTrace();
-                } catch (InvocationTargetException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }.runTaskLater(plugin, 10L); // even with a 10 tick delay, not all names get removed.
     }
 }
