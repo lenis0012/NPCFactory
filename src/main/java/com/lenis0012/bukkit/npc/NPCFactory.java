@@ -1,31 +1,19 @@
 package com.lenis0012.bukkit.npc;
 
-import com.lenis0012.bukkit.npc.event.NPCDamageEvent;
-import com.lenis0012.bukkit.npc.event.NPCDeathEvent;
-import net.minecraft.server.v1_8_R1.EntityPlayer;
-import net.minecraft.server.v1_8_R1.Packet;
-import net.minecraft.server.v1_8_R1.PacketPlayOutPlayerInfo;
-import net.minecraft.server.v1_8_R1.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R1.metadata.PlayerMetadataStore;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -166,17 +154,6 @@ public class NPCFactory implements Listener {
     public void onPluginDisable(PluginDisableEvent event) {
         if (event.getPlugin().equals(plugin)) {
             despawnAll();
-        }
-    }
-
-    @EventHandler
-    public void onEntityDamage(NPCDamageEvent event) {
-        NPC npc = event.getNpc();
-        double damage = event.getDamage();
-        double health = npc.getBukkitEntity().getHealth();
-        if (health - damage <= 0) {
-            NPCDeathEvent deathEvent = new NPCDeathEvent(npc);
-            Bukkit.getPluginManager().callEvent(deathEvent);
         }
     }
 }
