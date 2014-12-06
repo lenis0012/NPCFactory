@@ -14,8 +14,8 @@ public class NPCNetworkManager extends NetworkManager {
         super(EnumProtocolDirection.SERVERBOUND);
 
         try {
-            Field channel = NetworkManager.class.getDeclaredField("m");
-            Field address = NetworkManager.class.getDeclaredField("n");
+            Field channel = NetworkManager.class.getDeclaredField("i");
+            Field address = NetworkManager.class.getDeclaredField("j");
 
             channel.setAccessible(true);
             address.setAccessible(true);
