@@ -1,5 +1,6 @@
 package com.lenis0012.bukkit.npc;
 
+import com.lenis0012.bukkit.npc.event.NPCSpawnEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -64,7 +65,11 @@ public class NPCFactory implements Listener {
         World world = location.getWorld();
         NPCEntity entity = new NPCEntity(world, location, profile, networkManager);
         entity.getBukkitEntity().setMetadata("NPC", new FixedMetadataValue(plugin, true));
-        return entity;
+
+        NPCSpawnEvent spawnEvent = new NPCSpawnEvent(entity);
+        Bukkit.getServer().getPluginManager().callEvent(spawnEvent);
+
+        return spawnEvent.isCancelled() ? null : entity;
     }
 
     /**
