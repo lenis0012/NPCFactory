@@ -1,7 +1,7 @@
 package com.lenis0012.bukkit.npc;
 
 import com.lenis0012.bukkit.npc.event.NPCDamageEvent;
-import com.lenis0012.bukkit.npc.event.NPCDeathEvent;
+import com.lenis0012.bukkit.npc.event.NPCDespawnEvent;
 import com.lenis0012.bukkit.npc.event.NPCInteractEvent;
 import net.minecraft.server.v1_8_R1.*;
 import net.minecraft.server.v1_8_R1.Entity;
@@ -280,7 +280,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
     public void die(DamageSource damageSource) {
         super.die(damageSource);
 
-        NPCDeathEvent deathEvent = new NPCDeathEvent(this);
+        NPCDespawnEvent deathEvent = new NPCDespawnEvent(this, NPCDespawnEvent.DespawnCause.DEATH);
         Bukkit.getPluginManager().callEvent(deathEvent);
     }
 
