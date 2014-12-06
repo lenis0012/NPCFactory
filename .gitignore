@@ -3,7 +3,7 @@
 #################
 .idea\*
 *.iml
-
+.idea
 bukkit/**
 target/**
 target\*
