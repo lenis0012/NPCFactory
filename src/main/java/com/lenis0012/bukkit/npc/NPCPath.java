@@ -1,8 +1,10 @@
 package com.lenis0012.bukkit.npc;
 
-import net.minecraft.server.v1_7_R4.MathHelper;
-import net.minecraft.server.v1_7_R4.PathEntity;
-import net.minecraft.server.v1_7_R4.Vec3D;
+import net.minecraft.server.v1_8_R1.BlockPosition;
+import net.minecraft.server.v1_8_R1.ChunkCache;
+import net.minecraft.server.v1_8_R1.MathHelper;
+import net.minecraft.server.v1_8_R1.PathEntity;
+import net.minecraft.server.v1_8_R1.Vec3D;
 
 import org.bukkit.Location;
 
@@ -68,7 +70,12 @@ public class NPCPath {
 		}
 		
 		try {
-			PathEntity path = entity.world.a(entity, to.getBlockX(), to.getBlockY(), to.getBlockZ(), (float) range, true, false, false, true);
+			BlockPosition posFrom = new BlockPosition(entity);
+			BlockPosition posTo = new BlockPosition(to.getX(), to.getY(), to.getZ());
+			int k = (int) (range + 8.0);
+			
+			ChunkCache chunkCache = new ChunkCache(entity.world, posFrom.a(-k, -k, -k), posFrom.a(k, k, k), 0);
+			PathEntity path = entity.getPathfinder().a(chunkCache, entity, posTo, (float) range);
 			if(path != null) {
 				return new NPCPath(entity, path, speed);
 			} else {

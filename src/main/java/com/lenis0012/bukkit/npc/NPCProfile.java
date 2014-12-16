@@ -1,12 +1,14 @@
 package com.lenis0012.bukkit.npc;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
-import net.minecraft.server.v1_7_R4.MinecraftServer;
-import net.minecraft.util.com.mojang.authlib.GameProfile;
-import net.minecraft.util.com.mojang.authlib.properties.Property;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+
+import net.minecraft.server.v1_8_R1.MinecraftServer;
+
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
@@ -18,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * Copyright 2014 Lennart ten Wolde
  */
 public class NPCProfile {
-    private static final Cache<String, Property> TEXTURE_CACHE = CacheBuilder.newBuilder()
+    private static final LoadingCache<String, Property> TEXTURE_CACHE = CacheBuilder.newBuilder()
             .expireAfterWrite(30L, TimeUnit.MINUTES)
             .build(new CacheLoader<String, Property>() {
                 @Override
@@ -27,9 +29,10 @@ public class NPCProfile {
                 }
             });
 
-    private static final Property loadTextures(String name) {
+    @SuppressWarnings("deprecation")
+	private static final Property loadTextures(String name) {
         GameProfile profile = new GameProfile(Bukkit.getOfflinePlayer(name).getUniqueId(), name);
-        MinecraftServer.getServer().av().fillProfileProperties(profile, true);
+        MinecraftServer.getServer().aB().fillProfileProperties(profile, true);
         return Iterables.getFirst(profile.getProperties().get("textures"), null);
     }
 
