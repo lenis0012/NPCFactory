@@ -4,7 +4,7 @@
 
     <groupId>com.lenis0012.bukkit</groupId>
     <artifactId>NPCFactory</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -19,6 +19,8 @@
     </repositories>
 
     <dependencies>
+        <!-- As CraftBukkit is no longer available for download, you have to provide
+        the file by yourself (Local repo, private repo, system path, ...). -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
