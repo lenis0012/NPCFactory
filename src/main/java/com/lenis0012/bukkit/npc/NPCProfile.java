@@ -6,9 +6,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-
 import net.minecraft.server.v1_8_R1.MinecraftServer;
-
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
@@ -30,7 +28,7 @@ public class NPCProfile {
             });
 
     @SuppressWarnings("deprecation")
-	private static final Property loadTextures(String name) {
+    private static final Property loadTextures(String name) {
         GameProfile profile = new GameProfile(Bukkit.getOfflinePlayer(name).getUniqueId(), name);
         MinecraftServer.getServer().aB().fillProfileProperties(profile, true);
         return Iterables.getFirst(profile.getProperties().get("textures"), null);
@@ -39,7 +37,7 @@ public class NPCProfile {
     /**
      * Load a profile with a custom skin
      *
-     * @param name Display name of profile
+     * @param name      Display name of profile
      * @param skinOwner Owner of profile skin
      * @return NPCProfile
      */

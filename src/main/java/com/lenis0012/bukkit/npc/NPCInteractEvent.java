@@ -7,45 +7,45 @@ import org.bukkit.event.HandlerList;
 
 /**
  * When a player right clicks a npc.
- * 
+ *
  * @author lenis0012
  */
 public class NPCInteractEvent extends Event implements Cancellable {
-	private static final HandlerList handlerList = new HandlerList();
-	private boolean canceled = false;
-	
-	@Override
-	public boolean isCancelled() {
-		return canceled;
-	}
+    private static final HandlerList handlerList = new HandlerList();
+    private boolean canceled = false;
 
-	@Override
-	public void setCancelled(boolean canceled) {
-		this.canceled = canceled;
-	}
-	
-	private final NPC npc;
-	private final HumanEntity entity;
-	
-	public NPCInteractEvent(NPC npc, HumanEntity entity) {
-		this.npc = npc;
-		this.entity = entity;
-	}
+    @Override
+    public boolean isCancelled() {
+        return canceled;
+    }
 
-	public NPC getNpc() {
-		return npc;
-	}
+    @Override
+    public void setCancelled(boolean canceled) {
+        this.canceled = canceled;
+    }
 
-	public HumanEntity getEntity() {
-		return entity;
-	}
+    private final NPC npc;
+    private final HumanEntity entity;
 
-	@Override
-	public HandlerList getHandlers() {
-		return handlerList;
-	}
-	
-	public static HandlerList getHandlerList() {
-		return handlerList;
-	}
+    public NPCInteractEvent(NPC npc, HumanEntity entity) {
+        this.npc = npc;
+        this.entity = entity;
+    }
+
+    public NPC getNpc() {
+        return npc;
+    }
+
+    public HumanEntity getEntity() {
+        return entity;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlerList;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
+    }
 }
