@@ -34,6 +34,7 @@ new Thread() {
 			}
 		});
 	}
+	
 }.start();
 ```
 You can also play animations on status, they are shown in NPCAnimation.java:
