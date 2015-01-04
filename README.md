@@ -78,4 +78,4 @@ v1.1:
 - Added setTarget function for constantly looking at entities
 
 v1.0:
-- Relase
+- Release
