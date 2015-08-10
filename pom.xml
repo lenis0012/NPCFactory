@@ -19,13 +19,13 @@
     </repositories>
 
     <dependencies>
-        <!-- As CraftBukkit is no longer available for download, you have to provide
-        the file by yourself (Local repo, private repo, system path, ...). -->
+        <!-- Although Spigot has a Maven repository, the actual server jar is used because it contains Craft and NMS classes. -->
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.7-R0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/spigot_server.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>

@@ -1,6 +1,6 @@
 package com.lenis0012.bukkit.npc;
 
-import net.minecraft.server.v1_8_R1.*;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 
 public class NPCPath {

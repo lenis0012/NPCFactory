@@ -6,7 +6,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_8_R1.MinecraftServer;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
@@ -30,7 +30,7 @@ public class NPCProfile {
     @SuppressWarnings("deprecation")
     private static final Property loadTextures(String name) {
         GameProfile profile = new GameProfile(Bukkit.getOfflinePlayer(name).getUniqueId(), name);
-        MinecraftServer.getServer().aB().fillProfileProperties(profile, true);
+        MinecraftServer.getServer().aD().fillProfileProperties(profile, true);
         return Iterables.getFirst(profile.getProperties().get("textures"), null);
     }
 
@@ -46,7 +46,7 @@ public class NPCProfile {
             final GameProfile profile = new GameProfile(UUID.randomUUID(), name);
             profile.getProperties().put("textures", TEXTURE_CACHE.get(skinOwner));
             return new NPCProfile(profile);
-        } catch(Exception e) {
+        } catch (Exception e) {
             //Make sure that we don't return any exceptions
             return new NPCProfile(name);
         }
