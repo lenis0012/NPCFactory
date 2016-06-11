@@ -2,8 +2,8 @@ package com.lenis0012.bukkit.npc;
 
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
-import net.minecraft.server.v1_8_R1.EnumProtocolDirection;
-import net.minecraft.server.v1_8_R1.NetworkManager;
+import net.minecraft.server.v1_8_R3.EnumProtocolDirection;
+import net.minecraft.server.v1_8_R3.NetworkManager;
 
 import java.lang.reflect.Field;
 import java.net.SocketAddress;

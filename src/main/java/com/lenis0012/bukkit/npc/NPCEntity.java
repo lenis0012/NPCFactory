@@ -1,15 +1,15 @@
 package com.lenis0012.bukkit.npc;
 
-import net.minecraft.server.v1_8_R1.*;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R1.event.CraftEventFactory;
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
@@ -29,7 +29,7 @@ public class NPCEntity extends EntityPlayer implements NPC {
 
     public NPCEntity(World world, Location location, NPCProfile profile, NPCNetworkManager networkManager) {
         super(((CraftServer) Bukkit.getServer()).getServer(), ((CraftWorld) world).getHandle(), profile.getHandle(), new PlayerInteractManager(((CraftWorld) world).getHandle()));
-        playerInteractManager.b(EnumGamemode.SURVIVAL);
+        playerInteractManager.b(WorldSettings.EnumGamemode.SURVIVAL);
         this.playerConnection = new NPCPlayerConnection(networkManager, this);
         this.fauxSleeping = true;
         this.bukkitEntity = new CraftPlayer((CraftServer) Bukkit.getServer(), this);
