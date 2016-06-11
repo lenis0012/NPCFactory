@@ -34,6 +34,7 @@ new Thread() {
 			}
 		});
 	}
+	
 }.start();
 ```
 You can also play animations on status, they are shown in NPCAnimation.java:
@@ -77,4 +78,4 @@ v1.1:
 - Added setTarget function for constantly looking at entities
 
 v1.0:
-- Relase
+- Release
