@@ -2,8 +2,10 @@ NPCFactory
 ==========
 
 NPC Library for CraftBukkit mod. Inspired by NPCLib
-
 Scroll down for useful examples, and a change log.
+
+### IMPORTANT
+this is massively, massively outdated. Please consider using a modern NPC plugin like Citizens instead of this library.
 
 Examples
 =======
